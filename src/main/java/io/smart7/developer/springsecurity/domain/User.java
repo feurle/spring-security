@@ -1,5 +1,6 @@
 package io.smart7.developer.springsecurity.domain;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +14,11 @@ import java.util.List;
 @Table(name = "users")
 public class User implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+    @Column(length=40)
+    @GeneratedValue(generator="randomId")
+    @GenericGenerator(name="randomId", strategy="io.smart7.developer.springsecurity.domain.RandomIdGenerator")
+    private String id;
 
     @Column(unique=true, nullable=false)
     private String username;
@@ -83,7 +86,7 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
